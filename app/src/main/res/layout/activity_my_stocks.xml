@@ -6,10 +6,23 @@
     android:layout_height="match_parent"
     >
 
+  <!-- this is for the empty view
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/emptyView"
+      android:text="@string/stocks_cannot_be_displayed"
+      android:layout_gravity="center"
+      android:textAppearance="?android:textAppearanceMedium"
+
+      />
+
+   -->
   <android.support.v7.widget.RecyclerView
       android:id="@+id/recycler_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+
       />
 
   <com.melnykov.fab.FloatingActionButton
