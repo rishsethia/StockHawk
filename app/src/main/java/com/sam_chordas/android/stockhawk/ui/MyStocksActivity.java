@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -90,6 +91,16 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               @Override public void onItemClick(View v, int position) {
                 //TODO:
                 // do something on item click
+                Intent myIntent  = new Intent(mContext,DetailActivity.class);
+                TextView symbolView = (TextView) v.findViewById(R.id.stock_symbol);
+                String symbolName = (String) symbolView.getText().toString();
+                TextView priceView = (TextView) v.findViewById(R.id.bid_price);
+                String price = (String) priceView.getText().toString();
+
+                myIntent.putExtra("symbol",symbolName);
+                myIntent.putExtra("price",price);
+
+                startActivity(myIntent);
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
