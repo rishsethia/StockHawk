@@ -37,12 +37,31 @@
         </service>
         <service android:name=".service.StockIntentService" />
 
+        <receiver
+            android:name=".ui.StockWidgetProvider"
+            android:label="Best widget in the world">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+        <service android:name=".ui.WidgetRemoteService"
+            android:permission = "android.permission.BIND_REMOTEVIEWS">
+        </service>
+
         <provider
             android:name=".data.generated.QuoteProvider"
             android:authorities="com.sam_chordas.android.stockhawk.data.QuoteProvider"
             android:exported="false" />
 
-        <activity android:name=".ui.DetailActivity"></activity>
+
+        <activity
+            android:name=".ui.DetailActivity"
+            android:label="@string/detailViewTitle" />
+
     </application>
 
 </manifest>

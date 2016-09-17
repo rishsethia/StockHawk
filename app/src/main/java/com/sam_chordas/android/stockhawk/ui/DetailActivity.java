@@ -1,16 +1,19 @@
 package com.sam_chordas.android.stockhawk.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.sam_chordas.android.stockhawk.R;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -28,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DetailActivity extends Activity {
+public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +43,16 @@ public class DetailActivity extends Activity {
         String symbolName = myBundle.getString("symbol");
         String price = myBundle.getString("price");
 
+
+        // Setting the symbol name textview
+        TextView headingView = (TextView) findViewById(R.id.HeadingView);
+        headingView.setText(symbolName);
         // Monthly graph to be created now
 
         final SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         String startDate = myFormat.format(c.getTime());
-        c.add(Calendar.MONTH,-1);
+        c.add(Calendar.YEAR,-1);
         String endDate = myFormat.format(c.getTime());
         OkHttpClient client = new OkHttpClient();
 
@@ -80,12 +87,12 @@ public class DetailActivity extends Activity {
                      JSONObject queryObj = myReader.getJSONObject("query");
                      JSONObject result = queryObj.getJSONObject("results");
                      JSONArray quotes = result.getJSONArray("quote");
-                    for (int i = quotes.length() - 1 , k =0 ; i >= 0 ; i--){
+                    for (int i = quotes.length() - 1 , k =0 ; i >= 0 ; i--) {
                         JSONObject j = quotes.getJSONObject(i);
                         String price = j.getString("Close");
-                        float priceF =   ((float) Float.parseFloat(price));
+                        float priceF = ((float) Float.parseFloat(price));
                         String date = j.getString("Date");
-                        SimpleDateFormat dispFormat = new SimpleDateFormat("dd-MM");
+                        SimpleDateFormat dispFormat = new SimpleDateFormat("dd-MMM");
                         String dispLabel = null;
                         try {
                             Date myDate = myFormat.parse(date);
@@ -93,44 +100,58 @@ public class DetailActivity extends Activity {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-
                         entries.add(new Entry((float) k, priceF));
                         k++;
-                            labels.add(dispLabel);
-
+                        labels.add(dispLabel);
                     }
+                        // Always wait for tasks on other threads to finish
+                        //Code to  update UI from background thread
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                LineChart myChart = (LineChart) findViewById(R.id.chart);
+                                LineDataSet lineDataSet = new LineDataSet(entries,"Prices of Stock");
+                                lineDataSet.setDrawCircles(false);
+                                lineDataSet.setColor(R.color.headingWhite);
+
+                                lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT); LineDataSet xyz = new LineDataSet(entries,"kabfkjkjas");
+                                LineData myData = new LineData(lineDataSet);
+                                myChart.setData(myData);
+                                myChart.invalidate();
+                                XAxis xAxis = myChart.getXAxis();
+                                xAxis.setAxisLineColor(R.color.material_red_700);
+                                xAxis.setDrawGridLines(false);
+                                YAxis yAxis = myChart.getAxisRight();
+                                yAxis.setEnabled(false);
+                                myChart.setMaxVisibleValueCount(10);
+                                xAxis.setValueFormatter(new AxisValueFormatter() {
+                                    @Override
+                                    public String getFormattedValue(float value, AxisBase axis) {
+                                        return labels.get((int) value);
+                                    }
+
+                                    @Override
+                                    public int getDecimalDigits() {
+                                        return 0;
+                                    }
+                                });
+
+                                myChart.setScaleYEnabled(false);
+
+                            }
+                        });
+
                  } catch (JSONException e) {
                      e.printStackTrace();
                  }
              }
+
             }
         });
 
-        LineChart myChart = (LineChart) findViewById(R.id.chart);
-        ArrayList<Entry> dummyEntry = new ArrayList<>();
-        dummyEntry.add(new Entry(0f, 32.06f));
-        dummyEntry.add(new Entry(1f, 28.92f));
-        dummyEntry.add(new Entry(2f, 63.82f));
-        LineDataSet lineDataSet = new LineDataSet(entries,"Prices of Stock");
-        lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT); LineDataSet xyz = new LineDataSet(dummyEntry,"kabfkjkjas");
-        LineData myData = new LineData(lineDataSet);
-        myChart.setData(myData);
-        myChart.invalidate();
-        XAxis xAxis = myChart.getXAxis();
-        xAxis.setAxisLineColor(R.color.material_red_700);
-        /*
-        xAxis.setValueFormatter(new AxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return labels.get((int) value);
-            }
 
-            @Override
-            public int getDecimalDigits() {
-                return 0;
-            }
-        });
-        */
+
+
 
 
 

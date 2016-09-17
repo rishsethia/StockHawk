@@ -12,4 +12,7 @@
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
     <string name="stocks_cannot_be_displayed">Stocks cannot be displayed</string>
     <string name="positive">OK</string>
+    <string name="detailViewTitle">Details</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

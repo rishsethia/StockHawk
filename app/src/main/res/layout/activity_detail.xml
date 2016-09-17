@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,10 +13,27 @@
     android:orientation="vertical"
     tools:context="com.sam_chordas.android.stockhawk.ui.DetailActivity">
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/material_blue_700"
+        android:layout_weight="1"
+        >
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/HeadingView"
+        android:textColor="@color/headingWhite"
+        android:layout_gravity="center_horizontal"
         />
 
     <TextView
@@ -21,11 +41,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/PriceView"
         />
+    </LinearLayout>
 
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 
 </LinearLayout>
