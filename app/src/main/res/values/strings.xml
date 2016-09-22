@@ -1,18 +1,21 @@
 <resources>
+
     <string name="app_name">Stock Hawk</string>
-
     <string name="action_example">Example action</string>
-
     <string name="action_settings">Settings</string>
     <string name="action_change_units">Change Units</string>
     <string name="symbol_search">Symbol Search</string>
     <string name="content_test">Search for a Stock Symbol</string>
-    <string name="input_hint">FB</string>
-    <string name="input_prefill"></string>
+    <string name="input_hint" translatable="false">FB</string>
+    <string name="input_prefill" translatable="false"></string>
+    <!-- No Internt connection translation -->
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
     <string name="stocks_cannot_be_displayed">Stocks cannot be displayed</string>
     <string name="positive">OK</string>
     <string name="detailViewTitle">Details</string>
     <string name="appwidget_text">EXAMPLE</string>
+    <!-- Content Description -->
     <string name="add_widget">Add widget</string>
+    <string name="add_a_stock">Add a Stock</string>
+    <string name="stock_symbol">Stock Symbol</string>
 </resources>

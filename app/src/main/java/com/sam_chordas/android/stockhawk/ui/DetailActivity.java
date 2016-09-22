@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +16,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.data.QuoteColumns;
+import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -42,11 +45,34 @@ public class DetailActivity extends AppCompatActivity {
         Bundle myBundle = myIntent.getExtras();
         String symbolName = myBundle.getString("symbol");
         String price = myBundle.getString("price");
+        Cursor mCursor ;
 
 
-        // Setting the symbol name textview
+
+        mCursor = getApplicationContext().getContentResolver().query(QuoteProvider.Quotes.withSymbol(symbolName),null,
+                QuoteColumns.ISCURRENT + " = ?",
+                new String[]{"1"},
+                null
+        );
+        mCursor.moveToFirst();
+        String name = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.NAME));
+        String yearLow = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.YEAR_LOW));
+        String yearHigh = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.YEAR_HIGH));
+
+        // Setting the views
         TextView headingView = (TextView) findViewById(R.id.HeadingView);
-        headingView.setText(symbolName);
+        headingView.setText(name);
+        TextView lowView = (TextView) findViewById(R.id.lowView);
+        lowView.setText("Yearly Low: " + yearLow);
+        TextView highView = (TextView) findViewById(R.id.highView);
+        highView.setText("Yearly High: " + yearHigh);
+
+
+
+
+
+
+
         // Monthly graph to be created now
 
         final SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -114,7 +140,8 @@ public class DetailActivity extends AppCompatActivity {
                                 lineDataSet.setDrawCircles(false);
                                 lineDataSet.setColor(R.color.headingWhite);
 
-                                lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT); LineDataSet xyz = new LineDataSet(entries,"kabfkjkjas");
+                                lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT); LineDataSet xyz = new LineDataSet(entries,"Entries");
+                                lineDataSet.setColor(R.color.headingWhite);
                                 LineData myData = new LineData(lineDataSet);
                                 myChart.setData(myData);
                                 myChart.invalidate();

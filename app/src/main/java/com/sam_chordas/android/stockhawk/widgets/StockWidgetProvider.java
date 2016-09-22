@@ -1,5 +1,6 @@
-package com.sam_chordas.android.stockhawk.ui;
+package com.sam_chordas.android.stockhawk.widgets;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.ui.DetailActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -24,8 +26,18 @@ public class StockWidgetProvider extends AppWidgetProvider {
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_view);
             rv.setRemoteAdapter(R.id.rec_view , myIntent);
 
-            // Add for the empty view here
+
+            // Setting up the pending intent template
+            Intent intent  = new Intent(context,DetailActivity.class);
+            PendingIntent myPendingIntent = PendingIntent.getActivity(context,0,intent,0);
+            rv.setPendingIntentTemplate(R.id.rec_view,myPendingIntent);
+
+            //TODO Add for the empty view here
+
+
             appWidgetManager.updateAppWidget(appWidgetId, rv);
+
+
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }

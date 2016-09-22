@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="app_name"> الأسهم هوك</string>
+    <string name="action_example">العمل سبيل المثال</string>
+    <string name="action_settings">إعدادات</string>
+    <string name="action_change_units">وحدات التغيير</string>
+    <string name="symbol_search">رمز البحث</string>
+    <string name="content_test">بحث عن الأوراق المالية رمز</string>
+    <!-- No Internt connection translation -->
+    <string name="network_toast">هذا التطبيق يتطلب اتصال بالإنترنت</string>
+    <string name="stocks_cannot_be_displayed">لا يمكن عرض أسهم</string>
+    <string name="positive">حسنا</string>
+    <string name="detailViewTitle">تفاصيل</string>
+    <string name="appwidget_text">مثال</string>
+    <!-- Content Description -->
+    <string name="add_widget">إضافة القطعة</string>
+    <string name="add_a_stock">إضافة أسهم</string>
+    <string name="stock_symbol">الأسهم رمز</string>
+</resources>

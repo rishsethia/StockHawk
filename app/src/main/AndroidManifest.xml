@@ -16,7 +16,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true"
+        >
         <activity
             android:name=".ui.MyStocksActivity"
             android:label="@string/app_name">
@@ -38,7 +40,7 @@
         <service android:name=".service.StockIntentService" />
 
         <receiver
-            android:name=".ui.StockWidgetProvider"
+            android:name=".widgets.StockWidgetProvider"
             android:label="Best widget in the world">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -48,14 +50,15 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
-        <service android:name=".ui.WidgetRemoteService"
+        <service android:name=".widgets.WidgetRemoteService"
             android:permission = "android.permission.BIND_REMOTEVIEWS">
         </service>
 
         <provider
             android:name=".data.generated.QuoteProvider"
             android:authorities="com.sam_chordas.android.stockhawk.data.QuoteProvider"
-            android:exported="false" />
+            android:exported="false"
+           />
 
 
         <activity
