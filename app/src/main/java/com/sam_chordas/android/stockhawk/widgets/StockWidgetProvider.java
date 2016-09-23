@@ -32,15 +32,19 @@ public class StockWidgetProvider extends AppWidgetProvider {
             PendingIntent myPendingIntent = PendingIntent.getActivity(context,0,intent,0);
             rv.setPendingIntentTemplate(R.id.rec_view,myPendingIntent);
 
-            //TODO Add for the empty view here
+
 
 
             appWidgetManager.updateAppWidget(appWidgetId, rv);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.rec_view);
 
 
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+
     }
+
+
 
 
 }

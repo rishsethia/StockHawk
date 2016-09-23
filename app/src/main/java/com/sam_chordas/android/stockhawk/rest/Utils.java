@@ -29,6 +29,7 @@ public class Utils {
       jsonObject = new JSONObject(JSON);
       if (jsonObject != null && jsonObject.length() != 0){
         jsonObject = jsonObject.getJSONObject("query");
+        if(jsonObject != null){
         int count = Integer.parseInt(jsonObject.getString("count"));
         if (count == 1){
           jsonObject = jsonObject.getJSONObject("results")
@@ -38,8 +39,18 @@ public class Utils {
             return null;
           }
           batchOperations.add(buildBatchOperation(jsonObject));
-        } else{
+        } else {
           resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
+          for (int i =0 ; i < resultsArray.length(); i++){
+            JSONObject myObj = resultsArray.getJSONObject(i);
+            if (myObj.getString("Bid")== "null"){
+              return null;
+            }
+          }
+
+        }}else{
+            return  null;
+          }
 
           if (resultsArray != null && resultsArray.length() != 0){
             for (int i = 0; i < resultsArray.length(); i++){
@@ -47,7 +58,7 @@ public class Utils {
               batchOperations.add(buildBatchOperation(jsonObject));
             }
           }
-        }
+
       }
     } catch (JSONException e){
       Log.e(LOG_TAG, "String to JSON failed: " + e);

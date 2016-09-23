@@ -41,7 +41,7 @@
 
         <receiver
             android:name=".widgets.StockWidgetProvider"
-            android:label="Best widget in the world">
+            android:label="Get your stocks on your homescreen">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

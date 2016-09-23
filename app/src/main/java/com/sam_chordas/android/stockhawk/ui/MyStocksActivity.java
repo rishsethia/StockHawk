@@ -1,6 +1,8 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -39,6 +41,7 @@ import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.sam_chordas.android.stockhawk.service.StockIntentService;
 import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
+import com.sam_chordas.android.stockhawk.widgets.StockWidgetProvider;
 
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -75,6 +78,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     if (savedInstanceState == null){
       // Run the initialize task service so that some stocks appear upon an empty database
       mServiceIntent.putExtra("tag", "init");
+
+
       if (isConnected){
         startService(mServiceIntent);
       } else{
@@ -89,8 +94,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                //TODO:
-                // do something on item click
+
                 Intent myIntent  = new Intent(mContext,DetailActivity.class);
                 TextView symbolView = (TextView) v.findViewById(R.id.stock_symbol);
                 String symbolName = (String) symbolView.getText().toString();
@@ -148,16 +152,18 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       new String[] { input.toString() }, null);
               if (c.getCount() != 0) {
                 Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                        Toast.makeText(MyStocksActivity.this, getString(R.string.already_saved),
                                 Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                 toast.show();
                 return;
               } else {
                 // Add the stock to DB
-                mServiceIntent.putExtra("tag", "add");
-                mServiceIntent.putExtra("symbol", input.toString());
-                startService(mServiceIntent);
+
+                  mServiceIntent.putExtra("tag", "add");
+                  mServiceIntent.putExtra("symbol", input.toString());
+                  startService(mServiceIntent);
+
               }
             }
           }).build().show();
@@ -255,6 +261,15 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public void onLoadFinished(Loader<Cursor> loader, Cursor data){
     mCursorAdapter.swapCursor(data);
     mCursor = data;
+    // setting the intent here
+    // As soon as the new data is loaded , an intent is fired to the StockProvider class
+    Intent intent = new Intent(this, StockWidgetProvider.class);
+    // Setting the action to update will fire it to the onUpdate method
+    intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+    // How to get the widget ids
+    int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), StockWidgetProvider.class));
+    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+    sendBroadcast(intent);
   }
 
   @Override

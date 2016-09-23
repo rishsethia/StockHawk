@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.R;
 
 /**
  * Created by sam_chordas on 10/1/15.
@@ -34,6 +35,8 @@ public class StockIntentService extends IntentService {
     Log.d(StockIntentService.class.getSimpleName(), "Stock Intent Service");
     StockTaskService stockTaskService = new StockTaskService(this);
     Bundle args = new Bundle();
+
+
     if (intent.getStringExtra("tag").equals("add")){
       args.putString("symbol", intent.getStringExtra("symbol"));
     }
@@ -46,7 +49,7 @@ public class StockIntentService extends IntentService {
       myHandler.post(new Runnable() {
         @Override
         public void run() {
-          Toast.makeText(StockIntentService.this, "Incorrect stock symbol ", Toast.LENGTH_SHORT).show();
+          Toast.makeText(StockIntentService.this, getString(R.string.incorrect_stock_symbol), Toast.LENGTH_SHORT).show();
         }
       });
 
